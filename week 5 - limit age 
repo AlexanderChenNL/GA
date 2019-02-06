@@ -1,0 +1,115 @@
+function summing(matrix)
+
+#This function will sum-up both the diagonals, rows & columns,
+#Input Matrix
+#Output Dict
+
+  total_sum = 0
+  totals_dict = Dict()
+  length_array = convert(Int,sqrt(length(matrix)))
+  constant = magic_constant(length_array)
+  for i in 1:length_array
+
+                    total_sum += abs((sum(matrix[i,:]) - constant))
+    totals_dict[string('R',i)] = (sum(matrix[i,:]) - constant)
+
+                    total_sum += abs((sum(matrix[:,i]) - constant))
+    totals_dict[string('C',i)] = (sum(matrix[:,i]) - constant)
+
+           total_sum += abs((sum([matrix[i,i] for i in 1:length_array]) - constant))
+    totals_dict["D1"] = (sum([matrix[i,i] for i in 1:length_array]) - constant)
+
+           total_sum += abs((sum([matrix[i,((length_array + 1) - i)] for i in 1:length_array]) - constant))
+    totals_dict["D2"] = (sum([matrix[i,((length_array + 1) - i)] for i in 1:length_array]) - constant)
+
+  end
+ return total_sum, totals_dict
+end
+
+function magic_constant(number)
+
+#This function calculates the magic constant for each number.
+#Input: number Integer
+#Output: number Integer
+
+
+  constant = convert(Int,number * ((number^2 + 1)/2))
+  return constant
+end
+
+function generate_matrix(number)
+
+#generates a matrix of n^2
+#Input: Number Integer
+#Output: Matrix
+
+  list_quadratic = ()
+  list_quadratic = [i for i in 1:number^2]
+  matrix = fill(0,number,number)
+  for i in 1:number
+    for j in 1:number
+        matrix[i,j] = rand(list_quadratic)
+        list_quadratic = filter(x->x!=matrix[i,j],list_quadratic)
+    end
+  end
+return matrix
+end
+
+function taking_sample(matrix)
+
+#This function swaps two values in the matrix with each other
+#Input:matrix
+#Output:matrix
+
+  i = rand(1:convert(Int,sqrt(length(matrix))))
+  j = rand(1:convert(Int,sqrt(length(matrix))))
+  k = rand(1:convert(Int,sqrt(length(matrix))))
+  l = rand(1:convert(Int,sqrt(length(matrix))))
+
+  if (i,j) == (k,l)
+    taking_sample(matrix)
+  else
+      matrix[i,j] , matrix[k,l] = matrix[k,l] , matrix[i,j]
+  end
+return matrix
+end
+
+
+
+function main_loop(number,age_limit)
+
+  parent = generate_matrix(number)
+  parent_fitness = first(summing(parent))
+  typeof(parent_fitness)
+  constant = magic_constant(number)
+  genetic_chain = Dict(parent_fitness => parent )
+  println("This is the initial fitness: $(parent_fitness)")
+  display(parent)
+
+  age = 0
+
+  while parent_fitness != 0
+
+    child = taking_sample(parent)
+    child_fitness = first(summing(child))
+    age += 1
+
+      if abs(child_fitness) < abs(parent_fitness)
+        println("fitness dropped to $(child_fitness), age was: $(age)")
+        parent = copy(child)
+        display(parent)
+        parent_fitness = child_fitness
+        age = 0
+        genetic_chain[parent_fitness] = parent
+      else
+        if age > age_limit 
+          random_choice = rand(genetic_chain)
+          parent = random_choice[2]
+          parent_fitness = random_choice[1]
+          println("Switched the random genetic_chain")
+        end
+      end
+  end
+  println("this is the correct lay-out with a magic constant of $(constant)")
+  return genetic_chain
+  end
