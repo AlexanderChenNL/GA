@@ -106,7 +106,7 @@ function main_loop(number,age_limit)
       elseif age >= age_limit
         parent = copy(genetic_array)
         parent_fitness = first(summing(parent))
-        println("restarted the latest genetic_chain")
+        println("restarted the latest genetic_chain, fitness: $(parent_fitness)")
         age = 0
       else
           parent = copy(parent)
