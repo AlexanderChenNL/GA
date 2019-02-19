@@ -1,0 +1,21 @@
+
+genes =      [["Flour" 2]; ["Butter" 4]; ["Sugar" 6]]
+
+
+weight_array = [0.265 , 0.5, 0.441]
+volume_array = [0.41 , 0.13, 0.29]
+
+function within_boundary(genes)
+        maxweight = 10
+        maxvolume = 4
+        weight_array = [0.265 , 0.5, 0.441]
+        volume_array = [0.41 , 0.13, 0.29]
+
+        weight_pass = sum(genes[:,2] .* weight_array) < maxweight && sum(genes[:,2] .* volume_array) < maxvolume
+
+        if weight_pass
+                println("weight and volume are under maximum limits")
+        else
+                println("Maximum limited exceeded")
+        end
+end
