@@ -1,5 +1,5 @@
 
-genes =      [["Flour" 2]; ["Butter" 4]; ["Sugar" 6]]
+genes =      [["Flour" 0]; ["Butter" 0]; ["Sugar" 1]]
 
 
 weight_array = [0.265 , 0.5, 0.441]
@@ -18,4 +18,10 @@ function within_boundary(genes)
         else
                 println("Maximum limited exceeded")
         end
+end
+
+
+function fitness(genes)
+        value_array = [1680 , 1440 , 1840]
+        return sum(genes[:,2] .* value_array)
 end
