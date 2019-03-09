@@ -1,0 +1,9 @@
+function euler_1(b1,b2)
+    sum_it = 0
+    for n in b1:b2
+        if n % 5 == 0 || n % 3 == 0
+            sum_it += n
+        end
+    end
+    return sum_it
+end
